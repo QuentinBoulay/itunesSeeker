@@ -39,10 +39,10 @@ const ResultScreen = ({ route, navigation }) => {
     return (
         <View style={styles.container}>
             <Text>{item.artistName} - {item.trackName}</Text>
-            <Button title={isFavorite ? "Remove from Favorites" : "Add to Favorites"} onPress={toggleFavorite} />
+            <Button title={isFavorite ? "Enlever des favoris" : "Ajouter aux favoris"} onPress={toggleFavorite} />
             <Text>Rating: {rating}</Text>
             {[1, 2, 3, 4, 5].map((rate) => (
-                <Button key={rate} title={`Rate ${rate}`} onPress={() => handleRating(rate)} />
+                <Button key={rate} title={`Note ${rate}`} onPress={() => handleRating(rate)} />
             ))}
         </View>
     );
