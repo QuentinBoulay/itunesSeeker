@@ -1,7 +1,8 @@
 import SelectDropdown from 'react-native-select-dropdown'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, { useState, useEffect } from 'react';
-import { Button, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
+import FlatListCustom from '../components/FlatListCustom';
 
 const SearchScreen = ({ navigation }) => {
     const [search, setSearch] = useState('');
@@ -22,7 +23,12 @@ const SearchScreen = ({ navigation }) => {
     };
 
     useEffect(() => {
-        searchItunes()
+        const clearAndSearch = async () => {
+            setResults([]);
+            await searchItunes();
+        };
+    
+        clearAndSearch();
     }, [search, selectedSearch]);
 
     return (
@@ -42,20 +48,20 @@ const SearchScreen = ({ navigation }) => {
                     renderButton={(selectedItem, isOpened) => {
                         return (
                             <View style={styles.dropdownButtonStyle}>
-                            {selectedItem && (
-                                <Icon name={selectedItem.icon} style={styles.dropdownButtonIconStyle} />
-                            )}
-                            <Text style={styles.dropdownButtonTxtStyle}>
-                                {(selectedItem && selectedItem.name) || 'Catégorie'}
-                            </Text>
-                            <Icon name={isOpened ? 'chevron-up' : 'chevron-down'} style={styles.dropdownButtonArrowStyle} />
+                                {selectedItem && (
+                                    <Icon name={selectedItem.icon} style={styles.dropdownButtonIconStyle} />
+                                )}
+                                <Text style={styles.dropdownButtonTxtStyle}>
+                                    {(selectedItem && selectedItem.name) || 'Catégorie'}
+                                </Text>
+                                <Icon name={isOpened ? 'chevron-up' : 'chevron-down'} style={styles.dropdownButtonArrowStyle} />
                             </View>
                         );
                     }}
                     renderItem={(item, index, isSelected) => {
                         return (
                             <View style={{...styles.dropdownItemStyle, ...(isSelected && {backgroundColor: '#D2D9DF'})}}>
-                                <Icon name={item.icon} style={styles.dropdownItemIconStyle} />
+                                <Icon name={item.icon} style={styles.dropdownItemIconStyle} /> 
                                 <Text style={styles.dropdownItemTxtStyle}>{item.name}</Text>
                             </View>
                         );
@@ -65,14 +71,7 @@ const SearchScreen = ({ navigation }) => {
                 />
             </View>
 
-            <FlatList
-                data={results}
-                renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => navigation.navigate('Results', { item })}>
-                        <Text>{item.artistName} - {item.trackName}</Text>
-                    </TouchableOpacity>
-                )}
-            />
+            <FlatListCustom data={results} category={selectedSearch} navigation={navigation} />
         </View>
     );
 };
