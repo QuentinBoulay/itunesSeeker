@@ -1,5 +1,6 @@
 import SearchScreen from "./screens/SearchScreen";
-import ResultScreen from "./screens/ResultScreen";
+import TrackResult from "./screens/TrackResultScreen";
+import ArtistResult from "./screens/ArtistResultScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -28,7 +29,8 @@ export default function App() {
               </TouchableOpacity>
             )} 
          }} />
-        <Stack.Screen name="Results" component={ResultScreen} />
+        <Stack.Screen name="TrackResult" component={TrackResult} />
+        <Stack.Screen name="ArtistResult" component={ArtistResult} />
         <Stack.Screen name="Favorites" component={FavoritesScreen} />
       </Stack.Navigator>
     </NavigationContainer>
