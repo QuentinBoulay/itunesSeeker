@@ -15,11 +15,11 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Search">
-        <Stack.Screen name="Search" component={SearchScreen} options={{ 
-          title: 'Itunes Seeker', 
+      <Stack.Navigator 
+        initialRouteName="Search"
+        screenOptions={{
           headerRight: () => {
-            const navigation = useNavigation()
+            const navigation = useNavigation();
             return (
               <TouchableOpacity onPress={() => navigation.navigate('Favorites')}>
                 <View style={{flexDirection: "row", alignItems: "center", marginRight: 10}}>
@@ -27,8 +27,11 @@ export default function App() {
                   <Icon name="heart" size={20} />
                 </View>
               </TouchableOpacity>
-            )} 
-         }} />
+            );
+          }
+        }}
+      >
+        <Stack.Screen name="Search" component={SearchScreen} options={{ title: 'Itunes Seeker' }} />
         <Stack.Screen name="TrackResult" component={TrackResult} />
         <Stack.Screen name="ArtistResult" component={ArtistResult} />
         <Stack.Screen name="Favorites" component={FavoritesScreen} />

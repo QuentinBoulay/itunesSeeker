@@ -5,12 +5,13 @@ import useFavorites from "../hooks/useFavorites";
 
 const FlatListCustom = ({ data, category, navigation }) => {
 
+    const { toggleFavorite, isFavorite } = useFavorites();
+
     return (
         <FlatList
+            style={{marginBottom: 50}}
             data={data}
             renderItem={({ item }) => {
-                const { favorites, toggleFavorite, isFavorite } = useFavorites(item);
-
                 return (
                     <View style={{flex: 1, flexDirection: "row", justifyContent: "space-between", paddingVertical: 10, alignItems: "center"}}>
                         <TouchableOpacity style={{flexDirection: "row", alignItems: "center", gap: 20, }} onPress={() => { category === 'musicTrack' ? navigation.navigate('TrackResult', { item }) : navigation.navigate('ArtistResult', { item }) }}>
@@ -20,8 +21,8 @@ const FlatListCustom = ({ data, category, navigation }) => {
                             <Text style={{width: 250}} numberOfLines={1}>{category === 'musicArtist' ? item.artistName : item.trackName}</Text>
                         </TouchableOpacity>
 
-                        { category === 'musicTrack' && <Pressable onPress={toggleFavorite} >
-                            { isFavorite ? <Icon name="heart" size={20} /> : <Icon name="hearto" size={20} /> }
+                        { category === 'musicTrack' && <Pressable onPress={() => toggleFavorite(item)} >
+                            { isFavorite(item) ? <Icon name="heart" size={20} /> : <Icon name="hearto" size={20} /> }
                         </Pressable>
                         }
                     </View>
