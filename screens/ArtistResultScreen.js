@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, SafeAreaView } from 'react-native';
+import { Text, View, StyleSheet, ActivityIndicator, SafeAreaView } from 'react-native';
 import FlatListCustom from '../components/FlatListCustom';
 import Icon  from "react-native-vector-icons/AntDesign";
 
 const ArtistResult = ({ route, navigation }) => {
     const { item } = route.params;
     const [results, setResults] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         console.log(item);
+        setLoading(true);
         const artistName = item.artistName;
         const getTracks = async () => {
             const response = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(artistName)}&entity=song`);
             const data = await response.json();
             setResults(data.results);
+            setLoading(false);
         }
 
         getTracks();

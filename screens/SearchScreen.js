@@ -74,7 +74,7 @@ const SearchScreen = ({ navigation }) => {
                 />
             </View>
             <View style={styles.resultsContainer}>
-                { loading ? <ActivityIndicator size="large" color="black" /> :
+                { results.length === 0 ? <Text style={{ alignSelf: 'center', textAlign: 'center', paddingHorizontal: 20, fontSize: 16, fontWeight: 'bold' }}>Bienvenue sur Itunes Seeker. Ici, tu peux chercher des musiques en tous genres.</Text> : loading ? <ActivityIndicator size="large" color="black" /> :
                     <FlatListCustom data={results} category={selectedSearch} navigation={navigation} />
                 }
             </View>
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
 
     resultsContainer: {
         justifyContent: "center",
-        flex: 1
+        flex: 1,
     },
 
     dropdownButtonStyle: {

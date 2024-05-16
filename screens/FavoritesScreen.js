@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import FlatListCustom from "../components/FlatListCustom";
 import useFavorites from "../hooks/useFavorites";
 
@@ -8,7 +8,10 @@ const FavoritesScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            {
+                favorites.length === 0 ? <Text style={{ alignSelf: 'center', textAlign: 'center', paddingHorizontal: 20, fontSize: 16, fontWeight: 'bold' }} >Aucun favori pour le moment</Text> :
             <FlatListCustom data={favorites} category="musicTrack" navigation={navigation} />
+            }
         </View>
     );
 
