@@ -14,11 +14,14 @@ const FlatListCustom = ({ data, category, navigation }) => {
             renderItem={({ item }) => {
                 return (
                     <View style={{flex: 1, flexDirection: "row", justifyContent: "space-between", paddingVertical: 10, alignItems: "center"}}>
-                        <TouchableOpacity style={{flexDirection: "row", alignItems: "center", gap: 20, }} onPress={() => { category === 'musicTrack' ? navigation.navigate('TrackResult', { item }) : navigation.navigate('ArtistResult', { item }) }}>
+                        <TouchableOpacity style={{flexDirection: "row", alignItems: "center", gap: 20, }} onPress={() => { 
+                            category === 'musicTrack' ? navigation.navigate('TrackResult', { item }) : category === 'album' ? navigation.navigate('AlbumResult', { item }) : navigation.navigate('ArtistResult', { item })  
+                            }}
+                        >
                             {
-                                category === 'musicArtist' ? <Icon name="user" size={20} /> : <Image source={{uri: item.artworkUrl100}} style={{width: 50, height: 50, borderRadius: 25}} />
+                                category === 'musicArtist' ? <Icon name="user" size={20} /> : category === 'album' ? <Icon name="book" size={20} /> : <Image source={{uri: item.artworkUrl100}} style={{width: 50, height: 50, borderRadius: 25}} />
                             }
-                            <Text style={{width: 250}} numberOfLines={1}>{category === 'musicArtist' ? item.artistName : item.trackName}</Text>
+                            <Text style={{width: 250}} numberOfLines={1}>{category === 'musicArtist' ? item.artistName : category === 'album' ? item.collectionName : item.trackName}</Text>
                         </TouchableOpacity>
 
                         { category === 'musicTrack' && <Pressable onPress={() => toggleFavorite(item)} >

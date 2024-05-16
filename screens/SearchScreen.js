@@ -52,7 +52,7 @@ const SearchScreen = ({ navigation }) => {
                         return (
                             <View style={styles.dropdownButtonStyle}>
                                 {selectedItem && (
-                                    <Icon name={selectedItem.icon} style={styles.dropdownButtonIconStyle} />
+                                    <Icon name={selectedItem.icon} />
                                 )}
                                 <Text style={styles.dropdownButtonTxtStyle}>
                                     {(selectedItem && selectedItem.name) || 'Catégorie'}

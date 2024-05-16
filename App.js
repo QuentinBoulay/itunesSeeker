@@ -2,6 +2,7 @@ import SearchScreen from "./screens/SearchScreen";
 import TrackResult from "./screens/TrackResultScreen";
 import ArtistResult from "./screens/ArtistResultScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
+import AlbumResult from "./screens/AlbumResultScreen";
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from "@react-navigation/stack";
@@ -33,6 +34,7 @@ export default function App() {
       >
         <Stack.Screen name="Search" component={SearchScreen} options={{ title: 'Itunes Seeker' }} />
         <Stack.Screen name="TrackResult" component={TrackResult} />
+        <Stack.Screen name="AlbumResult" component={AlbumResult} />
         <Stack.Screen name="ArtistResult" component={ArtistResult} />
         <Stack.Screen name="Favorites" component={FavoritesScreen} />
       </Stack.Navigator>
