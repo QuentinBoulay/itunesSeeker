@@ -5,17 +5,20 @@ import { ActivityIndicator, Platform, StyleSheet, Text, TextInput, View, Keyboar
 import FlatListCustom from '../components/FlatListCustom';
 
 const SearchScreen = ({ navigation }) => {
+    // Define state variables
     const [search, setSearch] = useState('');
     const [selectedSearch, setSelectedSearch] = useState('musicArtist');
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
 
+    // Define search categories
     const categories = [
-        {name: 'Artiste', value: 'musicArtist'},
-        {name: 'Musique', value: 'musicTrack'},
-        {name: 'Album', value: 'album'}
+        { name: 'Artiste', value: 'musicArtist' },
+        { name: 'Musique', value: 'musicTrack' },
+        { name: 'Album', value: 'album' }
     ];
 
+    // Function to search iTunes
     const searchItunes = async () => {
         setLoading(true);
         const query = `term=${encodeURIComponent(search)}&entity=${selectedSearch}`;
@@ -25,12 +28,13 @@ const SearchScreen = ({ navigation }) => {
         setLoading(false);
     };
 
+    // useEffect to trigger search on search term or category change
     useEffect(() => {
         const clearAndSearch = async () => {
             setResults([]);
             await searchItunes();
         };
-    
+
         clearAndSearch();
     }, [search, selectedSearch]);
 
@@ -63,8 +67,8 @@ const SearchScreen = ({ navigation }) => {
                     }}
                     renderItem={(item, index, isSelected) => {
                         return (
-                            <View style={{...styles.dropdownItemStyle, ...(isSelected && {backgroundColor: '#D2D9DF'})}}>
-                                <Icon name={item.icon} style={styles.dropdownItemIconStyle} /> 
+                            <View style={{ ...styles.dropdownItemStyle, ...(isSelected && { backgroundColor: '#D2D9DF' }) }}>
+                                <Icon name={item.icon} style={styles.dropdownItemIconStyle} />
                                 <Text style={styles.dropdownItemTxtStyle}>{item.name}</Text>
                             </View>
                         );
@@ -74,8 +78,12 @@ const SearchScreen = ({ navigation }) => {
                 />
             </View>
             <View style={styles.resultsContainer}>
-                { search.length === 0 ? <Text style={{ alignSelf: 'center', textAlign: 'center', paddingHorizontal: 20, fontSize: 16, fontWeight: 'bold' }}>Bienvenue sur Itunes Seeker. Ici, tu peux chercher des musiques en tous genres.</Text> : loading ? <ActivityIndicator size="large" color="black" /> :
-                    results.length === 0 && search.length > 0 && !loading ? <Text style={{ alignSelf: 'center', textAlign: 'center', paddingHorizontal: 20, fontSize: 16, fontWeight: 'bold' }}>Aucun résultat trouvé pour "{search}"</Text> :
+                {search.length === 0 ? 
+                    <Text style={{ alignSelf: 'center', textAlign: 'center', paddingHorizontal: 20, fontSize: 16, fontWeight: 'bold' }}>Bienvenue sur Itunes Seeker. Ici, tu peux chercher des musiques en tous genres.</Text> :
+                    loading ? 
+                    <ActivityIndicator size="large" color="black" /> :
+                    results.length === 0 && search.length > 0 && !loading ? 
+                    <Text style={{ alignSelf: 'center', textAlign: 'center', paddingHorizontal: 20, fontSize: 16, fontWeight: 'bold' }}>Aucun résultat trouvé pour "{search}"</Text> :
                     <FlatListCustom data={results} category={selectedSearch} navigation={navigation} />
                 }
             </View>
@@ -91,7 +99,6 @@ const styles = StyleSheet.create({
         padding: 20
     },
     searchBarContainer: {
-        display: 'flex',
         flexDirection: 'row',
         marginBottom: 20,
         gap: 10,
@@ -101,17 +108,14 @@ const styles = StyleSheet.create({
         height: 50,
         backgroundColor: '#E9ECEF',
         borderRadius: 12,
-        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 12,
     },
-
     resultsContainer: {
         justifyContent: "center",
         flex: 1,
     },
-
     dropdownButtonStyle: {
         flexGrow: 1,
         height: 50,
@@ -121,31 +125,31 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 12,
-      },
-      dropdownButtonTxtStyle: {
+    },
+    dropdownButtonTxtStyle: {
         flex: 1,
         fontWeight: '500',
         color: '#151E26',
-      },
-      dropdownMenuStyle: {
+    },
+    dropdownMenuStyle: {
         backgroundColor: '#E9ECEF',
         borderRadius: 8,
-      },
-      dropdownItemStyle: {
+    },
+    dropdownItemStyle: {
         width: '100%',
         flexDirection: 'row',
         paddingHorizontal: 12,
         justifyContent: 'center',
         alignItems: 'center',
         paddingVertical: 8,
-      },
-      dropdownItemTxtStyle: {
+    },
+    dropdownItemTxtStyle: {
         flex: 1,
         fontSize: 18,
         fontWeight: '500',
         color: '#151E26',
-      },
-      dropdownItemIconStyle: {
+    },
+    dropdownItemIconStyle: {
         fontSize: 28
-      },
+    },
 });

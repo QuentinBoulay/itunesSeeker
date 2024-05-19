@@ -1,5 +1,5 @@
 import React from "react";
-import {TouchableOpacity, Text, StyleSheet, ActivityIndicator} from "react-native";
+import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from "react-native";
 
 const ActionButton = ({
   onPress,
@@ -21,12 +21,15 @@ const ActionButton = ({
       activeOpacity={activeOpacity}
       style={[disabled ? styles.disabledButton : styles.button, style]}
     >
+      {/* Left icon */}
       {iconLeft}
+      {/* Loading indicator or button text */}
       {loading ? (
         <ActivityIndicator color="white" />
       ) : (
         <Text style={[styles.buttonText, textStyle]}>{title}</Text>
       )}
+      {/* Right icon */}
       {iconRight}
     </TouchableOpacity>
   );
@@ -44,7 +47,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    gap: 20
+    gap: 20,
   },
   disabledButton: {
     backgroundColor: "grey",

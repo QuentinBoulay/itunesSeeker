@@ -4,74 +4,72 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import useFavorites from '../hooks/useFavorites';
 import Icon from 'react-native-vector-icons/AntDesign';
 import ActionButton from '../components/ActionButton';
-import SelectDropdown from 'react-native-select-dropdown'
+import SelectDropdown from 'react-native-select-dropdown';
 
 const TrackResult = ({ route, navigation }) => {
     const { item } = route.params;
     const [rating, setRating] = useState(0);
 
-    const ratingData = [1,2,3,4,5];
+    // Rating options
+    const ratingData = [1, 2, 3, 4, 5];
 
-    const { isFavorite, toggleFavorite } = useFavorites()
+    // Hook to handle favorite tracks
+    const { isFavorite, toggleFavorite } = useFavorites();
 
+    // Function to handle rating selection
     const handleRating = async (newRating) => {
         await AsyncStorage.setItem(`rating_${item.trackId}`, newRating.toString());
         setRating(newRating);
     };
 
+    // Effect to get the saved rating on mount
     useEffect(() => {
         const getRating = async () => {
-            setRating(await AsyncStorage.getItem(`rating_${item.trackId}`));
-        }
+            const savedRating = await AsyncStorage.getItem(`rating_${item.trackId}`);
+            setRating(savedRating ? parseInt(savedRating) : 0);
+        };
 
-        getRating()
-    }, [])
+        getRating();
+    }, [item.trackId]);
 
     return (
         <View style={styles.container}>
-            <View style={{flexDirection: "row", marginRight: 100, gap: 20, alignItems: "center", paddingHorizontal: 20}}>
-                <Image source={{uri: item.artworkUrl100}} style={{width: 100, height: 100, borderRadius: 100}} />
-                <View>
-                    <Text style={[styles.title, {marginBottom: 20}]}>{item.artistName} - {item.trackName}</Text>
-                    <ActionButton style={{marginBottom: 20}} title={isFavorite(item) ? "Enlever des favoris" : "Ajouter aux favoris"} iconRight={isFavorite(item) ? <Icon name="heart" size={20} color={"white"} /> : <Icon name="hearto" size={20} color={"white"} /> } onPress={() => toggleFavorite(item)} />
-                    <View style={{gap: 10}}>
+            <View style={styles.trackInfoContainer}>
+                <Image source={{ uri: item.artworkUrl100 }} style={styles.image} />
+                <View style={styles.trackDetails}>
+                    <Text style={[styles.title, styles.marginBottom]} numberOfLines={1} ellipsizeMode="tail">{item.trackName}</Text>
+                    <Text numberOfLines={1} ellipsizeMode="tail">Artiste : {item.artistName}</Text>
+                    <ActionButton
+                        style={styles.marginBottom}
+                        title={isFavorite(item) ? "Enlever des favoris" : "Ajouter aux favoris"}
+                        iconRight={isFavorite(item) ? <Icon name="heart" size={20} color="white" /> : <Icon name="hearto" size={20} color="white" />}
+                        onPress={() => toggleFavorite(item)}
+                    />
+                    <View style={styles.ratingContainer}>
                         <Text>Ma note</Text>
                         <View style={styles.rating}>
-                            <Icon name="star" size={24} color={rating >= 1 ? "orange" : "gray"} />
-                            <Icon name="star" size={24} color={rating >= 2 ? "orange" : "gray"} />
-                            <Icon name="star" size={24} color={rating >= 3 ? "orange" : "gray"} />
-                            <Icon name="star" size={24} color={rating >= 4 ? "orange" : "gray"} />
-                            <Icon name="star" size={24} color={rating >= 5 ? "orange" : "gray"} />
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <Icon key={star} name="star" size={24} color={rating >= star ? "orange" : "gray"} />
+                            ))}
                         </View>
                     </View>
                 </View>
             </View>
-            <View style={styles.ratingContainer}>
+            <View style={styles.dropdownContainer}>
                 <SelectDropdown
                     data={ratingData}
-                    onSelect={(selectedItem, index) => {
-                        handleRating(selectedItem);
-                    }}
-                    renderButton={(selectedItem, isOpened) => {
-                        return (
-                            <View style={styles.dropdownButtonStyle}>
-                                {selectedItem && (
-                                    <Icon name={selectedItem.icon} style={styles.dropdownButtonIconStyle} />
-                                )}
-                                <Text style={styles.dropdownButtonTxtStyle}>
-                                    {(selectedItem && selectedItem) || 'Note'}
-                                </Text>
-                                <Icon name={isOpened ? 'up' : 'down'} style={styles.dropdownButtonArrowStyle} />
-                            </View>
-                        );
-                    }}
-                    renderItem={(item, index, isSelected) => {
-                        return (
-                            <View style={{...styles.dropdownItemStyle, ...(isSelected && {backgroundColor: '#D2D9DF'})}}>
-                                <Text style={styles.dropdownItemTxtStyle}>{item}</Text>
-                            </View>
-                        );
-                    }}
+                    onSelect={(selectedItem, index) => handleRating(selectedItem)}
+                    renderButton={(selectedItem, isOpened) => (
+                        <View style={styles.dropdownButtonStyle}>
+                            <Text style={styles.dropdownButtonTxtStyle}>{selectedItem || 'Note'}</Text>
+                            <Icon name={isOpened ? 'up' : 'down'} style={styles.dropdownButtonArrowStyle} />
+                        </View>
+                    )}
+                    renderItem={(item, index, isSelected) => (
+                        <View style={[styles.dropdownItemStyle, isSelected && styles.selectedDropdownItem]}>
+                            <Text style={styles.dropdownItemTxtStyle}>{item}</Text>
+                        </View>
+                    )}
                     showsVerticalScrollIndicator={false}
                     dropdownStyle={styles.dropdownMenuStyle}
                 />
@@ -82,26 +80,42 @@ const TrackResult = ({ route, navigation }) => {
 
 export default TrackResult;
 
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
     },
-
+    trackInfoContainer: {
+        flexDirection: 'row',
+        marginRight: 100,
+        gap: 20,
+        alignItems: 'center',
+        paddingHorizontal: 20,
+    },
+    image: {
+        width: 100,
+        height: 100,
+        borderRadius: 100,
+    },
+    trackDetails: {
+        gap: 20,
+    },
     title: {
         fontSize: 24,
-        fontWeight: "bold",
+        fontWeight: 'bold',
     },
-
-    rating: {
-        flexDirection: "row"
+    marginBottom: {
+        marginBottom: 20,
     },
-
     ratingContainer: {
-        marginTop: 50
+        gap: 10,
     },
-
+    rating: {
+        flexDirection: 'row',
+    },
+    dropdownContainer: {
+        marginTop: 50,
+    },
     dropdownButtonStyle: {
         flexGrow: 1,
         height: 50,
@@ -111,31 +125,34 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 12,
-      },
-      dropdownButtonTxtStyle: {
+    },
+    dropdownButtonTxtStyle: {
         flex: 1,
         fontWeight: '500',
         color: '#151E26',
-      },
-      dropdownMenuStyle: {
+    },
+    dropdownMenuStyle: {
         backgroundColor: '#E9ECEF',
         borderRadius: 8,
-      },
-      dropdownItemStyle: {
+    },
+    dropdownItemStyle: {
         width: '100%',
         flexDirection: 'row',
         paddingHorizontal: 12,
         justifyContent: 'center',
         alignItems: 'center',
         paddingVertical: 8,
-      },
-      dropdownItemTxtStyle: {
+    },
+    selectedDropdownItem: {
+        backgroundColor: '#D2D9DF',
+    },
+    dropdownItemTxtStyle: {
         flex: 1,
         fontSize: 18,
         fontWeight: '500',
         color: '#151E26',
-      },
-      dropdownItemIconStyle: {
-        fontSize: 28
-      },
+    },
+    dropdownButtonArrowStyle: {
+        fontSize: 28,
+    },
 });
