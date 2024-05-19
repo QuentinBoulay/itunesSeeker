@@ -1,7 +1,7 @@
 import SelectDropdown from 'react-native-select-dropdown'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Platform, StyleSheet, Text, TextInput, View, KeyboardAvoidingView } from 'react-native';
 import FlatListCustom from '../components/FlatListCustom';
 
 const SearchScreen = ({ navigation }) => {
@@ -35,7 +35,7 @@ const SearchScreen = ({ navigation }) => {
     }, [search, selectedSearch]);
 
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
             <View style={styles.searchBarContainer}>
                 <TextInput
                     style={styles.input}
@@ -74,11 +74,12 @@ const SearchScreen = ({ navigation }) => {
                 />
             </View>
             <View style={styles.resultsContainer}>
-                { results.length === 0 ? <Text style={{ alignSelf: 'center', textAlign: 'center', paddingHorizontal: 20, fontSize: 16, fontWeight: 'bold' }}>Bienvenue sur Itunes Seeker. Ici, tu peux chercher des musiques en tous genres.</Text> : loading ? <ActivityIndicator size="large" color="black" /> :
+                { search.length === 0 ? <Text style={{ alignSelf: 'center', textAlign: 'center', paddingHorizontal: 20, fontSize: 16, fontWeight: 'bold' }}>Bienvenue sur Itunes Seeker. Ici, tu peux chercher des musiques en tous genres.</Text> : loading ? <ActivityIndicator size="large" color="black" /> :
+                    results.length === 0 && search.length > 0 && !loading ? <Text style={{ alignSelf: 'center', textAlign: 'center', paddingHorizontal: 20, fontSize: 16, fontWeight: 'bold' }}>Aucun résultat trouvé pour "{search}"</Text> :
                     <FlatListCustom data={results} category={selectedSearch} navigation={navigation} />
                 }
             </View>
-        </View>
+        </KeyboardAvoidingView>
     );
 };
 

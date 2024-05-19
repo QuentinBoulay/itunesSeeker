@@ -29,7 +29,7 @@ const TrackResult = ({ route, navigation }) => {
 
     return (
         <View style={styles.container}>
-            <View style={{flexDirection: "row", marginRight: 100, gap: 20, alignItems: "center"}}>
+            <View style={{flexDirection: "row", marginRight: 100, gap: 20, alignItems: "center", paddingHorizontal: 20}}>
                 <Image source={{uri: item.artworkUrl100}} style={{width: 100, height: 100, borderRadius: 100}} />
                 <View>
                     <Text style={[styles.title, {marginBottom: 20}]}>{item.artistName} - {item.trackName}</Text>

@@ -25,7 +25,7 @@ const ArtistResult = ({ route, navigation }) => {
     return (
         <SafeAreaView style={{flex: 1}}>
             <View style={styles.container}>
-                <View style={{flexDirection: "row", alignItems: "center", gap: 20}}>
+                <View style={{flexDirection: "row", alignItems: "center", gap: 20, paddingHorizontal: 20}}>
                     <Icon name="user" size={50} />
                     <View style={{flexDirection: "column", gap: 20 }}>
                         <Text style={styles.title}>{item.artistName}</Text>
@@ -34,9 +34,14 @@ const ArtistResult = ({ route, navigation }) => {
 
                 </View>
                 
-                <View style={{ marginTop: 100, borderTopWidth: 1, borderColor: "gray", paddingTop: 20}}>            
-                    <Text style={[styles.subtitle, {marginBottom: 20}]}>Musique de l'artiste</Text>
-                    <FlatListCustom data={results} category="musicTrack" navigation={navigation} />
+                <View style={{ marginTop: 100, borderTopWidth: 1, borderColor: "gray", paddingTop: 20, justifyContent: "center", flex: 1 }}>            
+                    <Text style={[styles.subtitle, {marginBottom: 20}]}>Musiques de l'artiste</Text>
+                    <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+                        {
+                            loading ? <ActivityIndicator size="large" color="black" /> : <FlatListCustom data={results} category="musicTrack" navigation={navigation} />
+                        }
+                    </View>
+                    
                 </View>
             </View>
         </SafeAreaView>

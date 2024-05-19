@@ -9,11 +9,10 @@ const FlatListCustom = ({ data, category, navigation }) => {
 
     return (
         <FlatList
-            style={{marginBottom: 50}}
             data={data}
             renderItem={({ item }) => {
                 return (
-                    <View style={{flex: 1, flexDirection: "row", justifyContent: "space-between", paddingVertical: 10, alignItems: "center"}}>
+                    <View style={{flex: 1, flexDirection: "row", justifyContent: "space-between", marginVertical: 10, alignItems: "center"}}>
                         <TouchableOpacity style={{flexDirection: "row", alignItems: "center", gap: 20, }} onPress={() => { 
                             category === 'musicTrack' ? navigation.navigate('TrackResult', { item }) : category === 'album' ? navigation.navigate('AlbumResult', { item }) : navigation.navigate('ArtistResult', { item })  
                             }}
